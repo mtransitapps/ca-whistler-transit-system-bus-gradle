@@ -1,10 +1,9 @@
 # ORIGINAL FILE: https://github.com/mtransitapps/commons/tree/master/shared-overwrite
 os: linux
-dist: xenial # Ubuntu 16.04
-# dist: bionic # Ubuntu 18.04 # not compatible with OpenJDK 8
+arch: amd64
+dist: focal
 language: android
-jdk: openjdk8
-# jdk: openjdk11 # required for Ubuntu 18.04 Bionic
+jdk: openjdk11
 
 install: true
 
@@ -20,8 +19,8 @@ cache:
 
 env:
   global:
-    - ANDROID_API_LEVEL=29
-    - ANDROID_BUILD_TOOLS_VERSION=29.0.3
+    - ANDROID_API_LEVEL=30
+    - ANDROID_BUILD_TOOLS_VERSION=30.0.2
     - TZ=America/Toronto
 
 android:
@@ -31,11 +30,13 @@ android:
     - tools # to install Android SDK tools
     - build-tools-$ANDROID_BUILD_TOOLS_VERSION
     - android-$ANDROID_API_LEVEL
+  licenses:
+    - 'android-sdk-license-.+'
 
 branches:
   only:
-    - master
-    - mmathieum #TBB
+    - master #TBR main|prod
+    - mmathieum #TBR dev|ready|pull
     - /^hotfix/.*$/
     - develop
     - /^feature/.*$/
@@ -52,7 +53,6 @@ before_install:
   - echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > "$ANDROID_HOME/licenses/android-sdk-license"
   - echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" >> "$ANDROID_HOME/licenses/android-sdk-license"
   - touch ~/.android/repositories.cfg
-  - sdkmanager tools
 
 script:
   - ./build.sh
